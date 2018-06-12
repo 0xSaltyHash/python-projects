@@ -3,13 +3,11 @@
     from another tutorial https://code.tutsplus.com/articles/introduction-to-parallel-and-concurrent-programming-in-python--cms-28612
 """
 
-import socket
-import subprocess
-import sys, os
+import socket, sys, os, subprocess
 from datetime import datetime
 from queue import Queue
 from threading import Thread
-from time import sleep
+
 # Detetcts the number of cores
 NUM_WORKERS = os.cpu_count()
 task_queue = Queue()
