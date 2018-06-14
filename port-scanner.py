@@ -33,6 +33,9 @@ def worker():
         port = task_queue.get()
         check_port(port)
         task_queue.task_done()
+        
+        if task_queue.empty():
+            break
 def main():
 
     # Print a nice banner with information on which host we are about to scan
@@ -49,8 +52,6 @@ def main():
 
     try:
         threads = [Thread(target=worker) for _ in range(NUM_WORKERS)]
-        for thread in threads:
-            thread.daemon = True
         [task_queue.put(port) for port in port_list]
         [thread.start() for thread in threads]
         task_queue.join()
