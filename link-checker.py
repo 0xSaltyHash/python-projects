@@ -57,8 +57,10 @@ for link in results:
     else:
         valid_http.append(f"{link} responded with statuse code: {response.status_code}\n")
 
+# Output links with valid http response code in one file
 with open("valid.txt", 'w') as out:
     out.writelines(valid_http)
 
+# Output links with invalid http responses in one file
 with open("invalid.txt", 'w') as out:
     out.writelines(invalid_http)
