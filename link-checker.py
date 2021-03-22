@@ -11,7 +11,7 @@ from sys import argv
 import requests
 import urllib3
 
-#supresses the insecure ssl warning
+# supresses the insecure ssl warning
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 if len(argv) != 2:
@@ -26,32 +26,39 @@ headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36
 
 
 with open(filename, 'r') as f:
-    """ 
+
+    """
         Reads the file and stores it in a list, every element is a url
     """
     results = f.read().splitlines()
-    
-    #Clears empty strings (courtsey of stackoverflow)
+
+    # Clears empty strings (courtsey of stackoverflow)
     results = list(filter(None, results))
-    
+
+valid_http = []
+invalid_http = []
+
 for link in results:
     """
         using the requests module it sends a get request to the every url in the list
         and if no exception occurs it will print the status code
     """
-    
-    #TODO-1: make it output urls that responds with 200 in a file (may include an option to add other respnse codes)
-    #TODO-2: Add option to check if the url returns a meaningful response by checking content-length header
+    # TODO-2: Add option to check if the url returns a meaningful response by checking content-length header
     try:
         response = requests.get("http://" + link, headers=headers, timeout=8, verify=False)
     except requests.exceptions.Timeout:
-        print(f"Cannot connect to {link}: request time-out")
+        invalid_http.append(f"Cannot connect to {link}: request time-out")
     except requests.exceptions.ConnectionError:
-        print(f"Cannot connect to {link}: Connection Error")
+        invalid_http.append(f"Cannot connect to {link}: Connection Error")
     except requests.exceptions.HTTPError:
-        print(f"Cannot connect to {link}: invalid HTTP response")
+        invalid_http.append(f"Cannot connect to {link}: invalid HTTP response")
     except requests.exception.RequestException:
-        print(f"Cannot connect to {link}: Unknown Error")
+        invalid_http.append(f"Cannot connect to {link}: Unknown Error")
     else:
-        print(f"{link} responded with statuse code: {response.status_code}")
-    
+        valid_http.append(f"{link} responded with statuse code: {response.status_code}")
+
+with open("valid.txt", 'w') as out:
+    out.writelines(valid_http)
+
+with open("invalid.txt", 'w') as out:
+    out.writelines(invalid_http)
