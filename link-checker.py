@@ -47,15 +47,15 @@ for link in results:
     try:
         response = requests.get("http://" + link, headers=headers, timeout=8, verify=False)
     except requests.exceptions.Timeout:
-        invalid_http.append(f"Cannot connect to {link}: request time-out")
+        invalid_http.append(f"Cannot connect to {link}: request time-out\n")
     except requests.exceptions.ConnectionError:
-        invalid_http.append(f"Cannot connect to {link}: Connection Error")
+        invalid_http.append(f"Cannot connect to {link}: Connection Error\n")
     except requests.exceptions.HTTPError:
-        invalid_http.append(f"Cannot connect to {link}: invalid HTTP response")
+        invalid_http.append(f"Cannot connect to {link}: invalid HTTP response\n")
     except requests.exception.RequestException:
-        invalid_http.append(f"Cannot connect to {link}: Unknown Error")
+        invalid_http.append(f"Cannot connect to {link}: Unknown Error\n")
     else:
-        valid_http.append(f"{link} responded with statuse code: {response.status_code}")
+        valid_http.append(f"{link} responded with statuse code: {response.status_code}\n")
 
 with open("valid.txt", 'w') as out:
     out.writelines(valid_http)
