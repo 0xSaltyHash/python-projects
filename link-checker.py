@@ -54,6 +54,8 @@ for link in results:
         invalid_http.append(f"Cannot connect to {link}: invalid HTTP response\n")
     except requests.exceptions.RequestException:
         invalid_http.append(f"Cannot connect to {link}: Unknown Error\n")
+    except requests.exceptions.TooManyRedirects:
+        invalid_http.append(f"cannot connect to {link}: too many redirects\n")
     else:
         valid_http.append(f"{link} responded with statuse code: {response.status_code}\n")
 
