@@ -52,7 +52,7 @@ for link in results:
         invalid_http.append(f"Cannot connect to {link}: Connection Error\n")
     except requests.exceptions.HTTPError:
         invalid_http.append(f"Cannot connect to {link}: invalid HTTP response\n")
-    except requests.exception.RequestException:
+    except requests.exceptions.RequestException:
         invalid_http.append(f"Cannot connect to {link}: Unknown Error\n")
     else:
         valid_http.append(f"{link} responded with statuse code: {response.status_code}\n")
